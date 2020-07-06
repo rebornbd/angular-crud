@@ -1,0 +1,104 @@
+
+<div *ngIf="!isEditable && !onlyView">
+    <button routerLink="/create"class="btn btn-primary mb-4">CREATE NEW USER</button>
+
+    <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Address</th>
+            <th scope="col">Operations</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.address }}</td>
+            <td>
+                <button (click)="viewUser(user)" class="btn btn-primary">VIEW</button>
+                <button (click)="editUser(user)" class="btn btn-warning mx-2">EDIT</button>
+                <button (click)="deleteUser(user.id)" class="btn btn-danger">DELETE</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+<div *ngIf="isEditable">
+    <form [formGroup]="form">
+        <input type="hidden" [(ngModel)]="userid" formControlName="id" />
+
+        <input type="text" class="form-control" placeholder="enter name"
+            [(ngModel)]="username"
+            formControlName="name" />
+        <div *ngIf="form.get('name').touched && form.get('name').invalid" class="alert-danger text-center">
+            <div *ngIf="form.get('name').errors.required">this field is required!</div>
+            <div *ngIf="form.get('name').errors.minlength">name at least {{ form.get('name').errors.minlength.requiredLength }} character!</div>
+        </div>
+
+        <input type="email" class="form-control mt-3" placeholder="enter email"
+            [(ngModel)] = "useremail"
+            formControlName="email" />
+        <div *ngIf="form.get('email').touched && form.get('email').invalid" class="alert-danger text-center">
+            <div *ngIf="form.get('email').errors.required">this field is required!</div>
+            <div *ngIf="form.get('email').errors.minlength">email at least {{ form.get('email').errors.minlength.requiredLength }} character!</div>
+            <div *ngIf="form.get('email').errors.pattern">enter valid email address!</div>
+        </div>
+        
+        <input type="text" class="form-control my-3" placeholder="enter address"
+            [(ngModel)] = "useraddress"
+            formControlName="address" />
+
+        <div *ngIf="isEditable; else elseBlock">
+            <button (click)="updateUser()" type="button" class="btn btn-primary btn-block" [disabled]="!form.valid">UPDATE</button>
+        </div>
+        <ng-template #elseBlock>
+            <button (click)="viewEnd()" type="button" class="btn btn-primary btn-block" [disabled]="!form.valid">
+                GO TO MAIN MANUE
+            </button>
+        </ng-template>
+        
+    </form>
+</div>
+
+<div *ngIf="onlyView">
+    <form [formGroup]="form">
+        <input type="hidden" [(ngModel)]="userid" formControlName="id" />
+
+        <input type="text" class="form-control" placeholder="enter name"
+            [(ngModel)]="username"
+            [attr.disabled]="onlyView"
+            formControlName="name" />
+        <div *ngIf="form.get('name').touched && form.get('name').invalid" class="alert-danger text-center">
+            <div *ngIf="form.get('name').errors.required">this field is required!</div>
+            <div *ngIf="form.get('name').errors.minlength">name at least {{ form.get('name').errors.minlength.requiredLength }} character!</div>
+        </div>
+
+        <input type="email" class="form-control mt-3" placeholder="enter email"
+            [(ngModel)] = "useremail"
+            [attr.disabled]="onlyView"
+            formControlName="email" />
+        <div *ngIf="form.get('email').touched && form.get('email').invalid" class="alert-danger text-center">
+            <div *ngIf="form.get('email').errors.required">this field is required!</div>
+            <div *ngIf="form.get('email').errors.minlength">email at least {{ form.get('email').errors.minlength.requiredLength }} character!</div>
+            <div *ngIf="form.get('email').errors.pattern">enter valid email address!</div>
+        </div>
+        
+        <input type="text" class="form-control my-3" placeholder="enter address"
+            [(ngModel)] = "useraddress"
+            [attr.disabled]="onlyView"
+            formControlName="address" />
+
+        <div *ngIf="isEditable; else elseBlock">
+            <button (click)="updateUser()" type="button" class="btn btn-primary btn-block" [disabled]="!form.valid">UPDATE</button>
+        </div>
+        <ng-template #elseBlock>
+            <button (click)="viewEnd()" type="button" class="btn btn-primary btn-block" [disabled]="!form.valid">
+                GO TO MAIN MANUE
+            </button>
+        </ng-template>
+        
+    </form>
+</div>

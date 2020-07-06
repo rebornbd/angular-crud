@@ -1,0 +1,22 @@
+
+<form [formGroup]="form">
+    <input type="text" class="form-control" placeholder="enter name"
+        formControlName="name" />
+    <div *ngIf="form.get('name').touched && form.get('name').invalid" class="alert-danger text-center">
+        <div *ngIf="form.get('name').errors.required">this field is required!</div>
+        <div *ngIf="form.get('name').errors.minlength">name at least {{ form.get('name').errors.minlength.requiredLength }} character!</div>
+    </div>
+
+    <input type="email" class="form-control mt-3" placeholder="enter email"
+        formControlName="email" />
+    <div *ngIf="form.get('email').touched && form.get('email').invalid" class="alert-danger text-center">
+        <div *ngIf="form.get('email').errors.required">this field is required!</div>
+        <div *ngIf="form.get('email').errors.minlength">email at least {{ form.get('email').errors.minlength.requiredLength }} character!</div>
+        <div *ngIf="form.get('email').errors.pattern">enter valid email address!</div>
+    </div>
+    
+    <input type="text" class="form-control my-3" placeholder="enter address"
+            formControlName="address" />
+
+    <button (click)="userCreate()" type="button" class="btn btn-primary btn-block" [disabled]="!form.valid">CREATE</button>
+</form>
